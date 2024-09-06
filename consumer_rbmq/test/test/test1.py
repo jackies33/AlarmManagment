@@ -1,58 +1,5 @@
 
 
-'''
-for daemon setup script
-create  - >> "mcedit /etc/systemd/system/zbx_alarm_proxy.service"
-copy in zbx_alarm_proxy.service ->>
-_______________________________
-
-[Unit]
-Description=Listen and classifier web hooks from netbox App through RabbitMQ
-
-[Service]
-ExecStart=/usr/bin/python3 /opt/zabbix_custom/zabbix_AM/rabbitmq/main.py
-StandardOutput=file:/var/log/rabbitmq/output_sys.log
-StandardError=file:/var/log/rabbitmq/error.log
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-_________________________________
-
-<<----copy in zbx_alarm_proxy.service
-
-run next commands -->>>
-_____________________________
-sudo systemctl daemon-reload
-sudo systemctl enable zbx_alarm_proxy.service
-sudo systemctl start zbx_alarm_proxy.service
-
-______________________________
-
-<<--- run next commands
-
-###for use command and check service status do next
-
->>mcedit ~/zbx_alarm_proxy
-copy there :
-
-#!/bin/bash
-python3 /opt/zabbix_custom/zabbix_AM/rabbitmq/main.py "$@"
-
-
->>chmod +x ~/zbx_alarm_proxy
-
->>sudo mv ~/zbx_alarm_proxy /usr/local/bin/
-
-use next command:   -   zbx_alarm_proxy --status
-
-
-
-'''
-
-
-
-
 from fastapi import FastAPI, Response
 import time
 import uvicorn
@@ -64,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 sys.path.append('/opt/zabbix_custom/zabbix_AM/')
 
-from rabbitmq.my_env import initial_role, peer_server_url, weight_server, server_port,peer_node_name,node_name
+from consumer_rbmq.test.test import initial_role, peer_server_url, weight_server, server_port,peer_node_name,node_name
 from rabbitmq.consumer import consumer_core
 
 app = FastAPI()
@@ -73,7 +20,6 @@ last_heartbeat_time = time.time()
 times_check = 2
 
 role_lock = threading.Lock()
-
 
 @app.post("/heartbeat")
 def heartbeat():
@@ -128,7 +74,7 @@ def manage_consumer():
             current_role = initial_role
         if current_role == 'active':
             consumer_core()
-        time.sleep(0.1)
+        time.sleep(2)
 
 def run_webserver():
     uvicorn.run(app, host="0.0.0.0", port=server_port)
