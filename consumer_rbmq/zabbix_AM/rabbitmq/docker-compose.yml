@@ -1,0 +1,48 @@
+
+version: '3.8'
+
+services:
+  zbx_alarm_logic:
+    build: ./zbx_alarm_logic
+    container_name: zbx_alarm_logic
+    environment:
+      - RABBITMQ_HOST=10.50.164.38
+      - PEER_SERVER_URL=10.50.174.37:8055
+      - WEIGHT_SERVER=100
+      - SERVER_PORT=8055
+      - PEER_NODE_NAME=sdc
+      - NODE_NAME=kr01
+      - ALARM_HOST_NAME=EXTERNAL_SYSTEM_ALARM_MANAGER
+    networks:
+      - app-network
+    volumes:
+      - /opt/rabbitmq_logs:/var/log/rabbitmq
+    ports:
+      - "8055:8055"
+    restart: always
+
+  zabbix_sender:
+    build: ./zbx_sender
+    container_name: zabbix_sender
+    environment:
+      - RABBITMQ_HOST=10.50.164.38
+    networks:
+      - app-network
+    ports:
+      - "8056:8056"
+    restart: always
+
+  zabbix_deleter_short_alarms:
+    build: ./zbx_deleter_short_alarms
+    container_name: zabbix_deleter_short_alarms
+    environment:
+      - RABBITMQ_HOST=10.50.174.38
+    networks:
+      - app-network
+    ports:
+      - "8057:8057"
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge
