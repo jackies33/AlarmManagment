@@ -104,23 +104,3 @@ def alert_logic(queue_name, alert):
 
 
 
-
-
-
-my_alarm = {'event_name': 'Подозрительная активность',
-            'event_description': 'Успешное подключение к ВПН клиента, находящегося за пределами Российской Федерации',
-            'event_type': 'aggregation-v1',
-            'event_id': '133',
-            'event_timestamp': '2024-08-06T05:10:25.430+03:00',
-            'event_source': 'sdc-net-log-graylog01',
-            'event_key': '',
-            'event_priority': '3',
-            'event_alert': 'true',
-            'event_timestamp_processing': '2024-08-06T05:10:25.430+03:00',
-            'backlog': {'last_messages': [{'vpn': 'vpn-gw01',
-                                           'time': 'Aug 06 2024 05:10:25',
-                                           'user': 'MorozovAnVl',
-                                           'source_ip': '212.175.95.12',
-                                           'country': 'Турция',
-                                           'city': 'Анкара',
-                                           'link': 'https://grlg.net.tech.mosreg.ru/messages/cisco_asa_syslog_35/0b2bdb60-5399-11ef-846a-005056abc809'}]}}

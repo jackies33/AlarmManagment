@@ -13,6 +13,7 @@ services:
       - PEER_NODE_NAME=sdc
       - NODE_NAME=kr01
       - ALARM_HOST_NAME=EXTERNAL_SYSTEM_ALARM_MANAGER
+      - TZ=Europe/Moscow
     networks:
       - app-network
     volumes:
@@ -26,6 +27,7 @@ services:
     container_name: zabbix_sender
     environment:
       - RABBITMQ_HOST=10.50.164.38
+      - TZ=Europe/Moscow
     networks:
       - app-network
     ports:
@@ -37,6 +39,7 @@ services:
     container_name: zabbix_deleter_short_alarms
     environment:
       - RABBITMQ_HOST=10.50.174.38
+      - TZ=Europe/Moscow
     networks:
       - app-network
     ports:

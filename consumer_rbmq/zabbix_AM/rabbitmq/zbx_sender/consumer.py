@@ -122,6 +122,7 @@ def consume_from_rabbitmq(queue_name):
             credentials=credentials
         ))
         channel = connection.channel()
+        channel.basic_qos(prefetch_count=1)
         channel.basic_consume(queue=queue_name, on_message_callback=on_message_callback, auto_ack=False)
         logger.info(f"Start listening on queue: {queue_name}")
         channel.start_consuming()
